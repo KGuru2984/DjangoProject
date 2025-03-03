@@ -1,0 +1,26 @@
+<html>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+
+            Enter Name: <input type="text" name="uname" required /> <br>
+            Enter Email Address: <input type="email" name="uemail" required /> <br>
+            Enter Password: <input type="password" name="upassword" required /> <br>
+            <input type="submit" value="Register" />
+
+            {% if messages %}
+                <div>
+                    <script type="text/javascript">
+                        {% for message in messages %}
+                            var userMessages="";
+                            userMessages +="{{ message }} \n";
+                        {% endfor %}    
+
+                        alert(userMessages);
+                    </script>
+                    
+                </div>
+            {% endif %}
+        </form>
+    </body>
+</html>

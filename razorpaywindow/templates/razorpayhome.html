@@ -1,0 +1,48 @@
+
+
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var options = {
+            key : "{{ rid }}",
+            amount: "{{ amount }}",
+            currency: "INR",
+            name: "Class Room Demo",
+            prefill: {
+                    "name": "ITVedant",
+                    "email": "abc@gmail.com",
+                    "contact": "9769747316",
+                },
+            theme : {
+                // "color":"#F37254",
+            },
+            description: "Payment for Order {{ orderid }}",
+            order_id: "{{ orderid }}",
+            callback_url: '/welcomehome/',
+            cancel_url: '/productbasketview/',
+            handler: function(response) {
+                // When the payment is successful, trigger form submission
+                // console.log(response);
+                alert(response)
+                alert('Signature:', response.razorpay_signature)
+                document.getElementById("payment-form").razorpay_payment_id.value = response.razorpay_payment_id;
+                document.getElementById("payment-form").razorpay_order_id.value = response.razorpay_order_id;
+                document.getElementById("payment-form").razorpay_signature.value = response.razorpay_signature;
+                document.getElementById("payment-form").submit();  // Submit the form
+            },
+
+        };
+
+        var payw=new Razorpay(options);
+        payw.open();
+});
+</script>
+
+<!-- Pre-created form in Django template -->
+<form id="payment-form" method="POST" action="{% url 'paymenthandler' %}">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+</form>

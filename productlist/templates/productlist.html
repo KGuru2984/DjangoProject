@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %} Product Management System {% endblock %}
+
+{% block content%}
+    <div>
+        <br>
+        <br>
+        <table class="table table-bordered">
+            <tr>
+                <th>Product ID:</th>
+                <th>Product Image:</th>
+                <th>Product Category:</th>
+                <th>Product Name:</th>
+                <th>Product Description:</th>
+                <th>Product Price</th>
+                <th>Actionable</th>
+            </tr>
+            {% for prodid,prodcat,prodname,proddesc,prodprice,prodimg in prods %}
+            <tr>
+                <td>{{ prodid }}</td>
+                <td><img src="{{ prodimg }}" /></td>
+                <td>{{ prodcat }}</td>
+                <td>{{ prodname }}</td>
+                <td>{{ proddesc }}</td>
+                <td>{{ prodprice }}</td>
+                <td>
+                    <a class="btn btn-warning" href ="{% url 'productviewbyid' prodid %}">Change</a>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="xid" value="{{ prodid }}" />
+                        <input type="submit" class="btn btn-danger" value="Remove" />
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% if messages %}
+        <script type="text/javascript">
+            allMessages='';
+            {% for message in messages %}
+                allMessages+="{{ message }} \n";
+            {% endfor %}
+
+            alert(allMessages);
+        </script>
+    {% endif %}
+{% endblock %}
+

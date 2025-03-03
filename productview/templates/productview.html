@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %} Product View {% endblock %}
+
+{% block content %}
+<div>
+    <!-- {{ prod.0.1 }} -->
+    <form method="post">
+        {% csrf_token %}
+        <br>
+        <br>
+    <table align="center">
+        <tr>
+            <td>Product Category: </td>
+            <td>
+                <select style="width: 400px;" name="catp">
+                    <option>Select Product Category</option>
+                    {% for categoryid,categoryname in prodcat %}
+                    <!-- {{ categoryid }} -->
+                    
+                        <option value="{{ categoryid }}" {% if categoryid == prodcaty %} selected {% endif %}>{{ categoryname }}</option>
+                    {% endfor %}
+                </select>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Product ID: </td>
+            <td><input type="text" name="ppid" style="width: 400px;" value="{{ prodid }}" disabled required /></td>
+        </tr>
+
+        <tr>
+            <td>Product Name: </td>
+            <td><input type="text" name="pname" style="width: 400px;" value="{{ prodname }}" required /></td>
+        </tr>
+
+        <tr>
+            <td>Product Description :</td>
+            <td><input type="textarea" name="pdesc" style="width: 400px;" value="{{ proddesc }}" rows="4" required /></td>
+        </tr>
+
+        <tr>
+            <td>Product Image:</td>
+            <td><input type="text" name="pimage" style="width: 400px;" value="{{ prodimg }}" required /></td>
+        </tr>
+
+        <tr>
+            <td>Product Price</td>
+            <td><input type="number" name="pprice" style="width: 400px;" value="{{ prodprice }}" required /></td>
+        </tr>
+
+        <tr>
+            <td>Product Status:</td>
+            <td>
+                <input type="radio" name="s1" value="Y" {% if prodflag == 'Y' %} checked {% endif %}/> ACTIVE &nbsp;&nbsp;&nbsp;&nbsp; <input type="radio" name="s1" value="N" {% if prodflag == 'N' %} checked {% endif %} /> INACTIVE
+            </td>
+
+        </tr>
+
+        <tr>
+            <td colspan="2" style="text-align: center; padding-top: 5%; padding-bottom: 5%;"><input type="submit" value="Save Changes" class="btn btn-success"></td>
+        </tr>
+    </table>
+   </form>
+   {% if messages %}
+        <script type="text/javascript">
+            var allMessages="";
+            {% for message in messages %}
+                allMessages +="{{ message }} \n"
+            {% endfor %}
+            alert(allMessages)
+            window.location.href="{% url 'productlistview' %}";
+        </script>
+   {% endif %}
+</div>
+{% endblock %}

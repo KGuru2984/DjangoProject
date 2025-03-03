@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Product Catalog Page {% endblock %}
+
+{% block content%}
+    <div>
+        <form method="post">
+            {% csrf_token %}
+            <br>
+            <br>
+        <table align="center">
+            <tr>
+                <td>Product Category: </td>
+                <td>
+                    <select style="width: 400px;" name="catp">
+                        <option selected>Select Product Category</option>
+                        {% for categoryid,categoryname in prodcat %}
+                            <option value="{{ categoryid }}">{{ categoryname }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td>Product Name: </td>
+                <td><input type="text" name="pname" style="width: 400px;" required /></td>
+            </tr>
+
+            <tr>
+                <td>Product Description :</td>
+                <td><input type="textarea" name="pdesc" style="width: 400px;" rows="4" required /></td>
+            </tr>
+
+            <tr>
+                <td>Product Image:</td>
+                <td><input type="text" name="pimage" style="width: 400px;" required /></td>
+            </tr>
+
+            <tr>
+                <td>Product Price</td>
+                <td><input type="number" name="pprice" style="width: 400px;"  required /></td>
+            </tr>
+
+            <tr>
+                <td colspan="2" style="text-align: center; padding-top: 5%; padding-bottom: 5%;"><input type="submit" value="Add Product"></td>
+            </tr>
+        </table>
+        </form>
+
+        {% if messages %}
+        <script type="text/javascript">
+            allMessages='';
+            {% for message in messages %}
+                allMessages +="{{ message }} \n";
+            {% endfor %}
+            
+            alert(allMessages);
+        </script>
+        {% endif %}
+
+        
+    </div>
+{% endblock %}

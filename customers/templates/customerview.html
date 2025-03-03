@@ -1,0 +1,11 @@
+<html>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+
+            Enter Customer Name: <input type="text" name="customername" required /> <br>
+            Enter Customer Address: <input type="text" name="customeraddress" required /> <br>
+            <input type="submit" value="Save Customer Details" />
+        </form>
+    </body>
+</html>

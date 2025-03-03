@@ -1,0 +1,40 @@
+<html>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+
+            Enter Email ID: <input type="email" name="useremail" required /> <br>
+            Enter Password: <input type="password" name="userpassword" required /> <br>
+            <input type="submit" value="Login" />
+        </form>
+        {% if messages %}
+                <div>
+                    <script type="text/javascript">
+                        {% for message in messages %}
+                            var userMessages="";
+                            var messageType= "{{ message.tags }}";
+                            userMessages +="{{ message }} \n";
+                        {% endfor %}    
+                        
+                        alert(userMessages);
+                        // alert(messageType)
+                        if(messageType=="success")
+                        {
+                            window.location.href="{% url 'UserHomeView' %}";
+                        }
+                        
+                    </script>
+                
+                </div>
+                
+            {% endif %}
+
+            <div>
+                {% if userdisplayname %}
+                    <p>{{ userdisplayname }}</p>
+                {% endif %}
+            </div>
+
+            
+    </body>
+</html>

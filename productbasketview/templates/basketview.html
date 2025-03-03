@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %} Basket Management System {% endblock %}
+{% block content %}
+    <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Items in Your Cart</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+        <div class="modal-body">
+          <table class="table">
+            <tr>
+                <th>Product ID</th>
+                <th>Product Image</th>
+                <th>Product Name</th>
+                <th>Product Quantity</th>
+                <th>Product Price</th>
+                <th>Total Price</th>
+            </tr>
+            {% for productid,productname,productimage,productqty,productprice,ptotal,basketid in bdata %}
+            <tr>
+                <td>{{ productid }} <input type="hidden" value="{{ basketid }}" id="basid" name="basid"></td>
+                <td><img src="{{ productimage }}" style="width: 50px; height: 50px;"></td>
+                <td>{{ productname }}</td>
+                <td><input type="number" id="pqty" name="pqty" value="{{ productqty }}" min=0 max=10 style="width: 50px;" class="product-qty" data-price="{{ productprice }}" required/></td>
+                <td>{{ productprice }}</td>
+                <td class="total-price">{{ ptotal }}</td>
+            </tr>
+            {% endfor%}
+            <tr>
+              <td colspan="4" align="right">Sub Total</td>
+              <td><input type="hidden" id="hidden-subtotal" name="subtotal" value="0"></td>
+              <td id="stotal">0.00</td>
+            </tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" value="Save and CheckOut" />
+        </div>
+    </form>  
+      </div>
+    </div>
+  </div>
+
+
+  <script type="text/javascript">
+    // This code triggers the modal when the page is fully loaded
+    document.addEventListener("DOMContentLoaded", function() {
+        
+            var modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+            modal.show();
+
+        // Event listener for when the modal is closed
+        document.getElementById('exampleModal').addEventListener('hidden.bs.modal', function () {
+            window.location.href = document.referrer;
+        });
+
+        //Function to calculate subtotal
+        function calculateSubtotal() {
+            var subtotal = 0;
+            document.querySelectorAll('.total-price').forEach(function(priceElement) {
+                subtotal += parseFloat(priceElement.textContent);
+            });
+            document.getElementById("stotal").textContent = subtotal.toFixed(2);
+            document.getElementById("hidden-subtotal").value = subtotal.toFixed(2);
+
+        }
+
+        // Event listener for quantity change and total price calculation
+    
+        calculateSubtotal();
+        document.querySelectorAll('.product-qty').forEach(function(productqtyinput)
+        {
+            
+            productqtyinput.addEventListener('input',function() 
+            {
+                var changedprodqty=parseInt(this.value);
+                var productprice=parseFloat(this.getAttribute('data-price'));
+                var changedtotal=changedprodqty * productprice;
+                this.closest('tr').querySelector('.total-price').textContent = changedtotal.toFixed(2);
+                calculateSubtotal();
+            }
+            );
+            
+            
+        }
+        );
+
+        // document.getElementById('openModalButton').addEventListener('click', function() {
+        //     modal.show();  // Trigger the modal to open
+        // });
+        
+        });
+    
+</script>
+{% endblock %}

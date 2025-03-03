@@ -1,0 +1,10 @@
+<html>
+    <body>
+        <form method="post">
+            {% csrf_token %}
+            Product Name:<input type="text" name="prodname" required /><br>
+            Product Price: <input type="number" name="prodprice" required /><br>
+            <input type="submit" value="Save Record">
+        </form>
+    </body>
+</html>

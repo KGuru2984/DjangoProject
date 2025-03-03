@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %} Product Card View {% endblock %}
+
+{% block content %}
+<br>
+<div class="row">
+    {% for prodid,prodcat,prodname,proddesc,prodprice,prodimg in prods %}
+    <div class="col-md-4 mb-4">
+        <div style="display: flex; justify-content: center; align-items: center; height: 250px;">
+            <img src="{{ prodimg }}" style="height: 250px; object-fit: cover;" />
+        </div>
+      <div class="card border-light shadow-sm">
+        <div class="card-body"  style="flex-grow: 1;">
+          <h5 class="card-title">{{ prodname }}</h5>
+          <p class="card-text">{{ proddesc | truncatewords:20 }}</p>
+          <p class="card-text"><strong>Price: {{ prodprice }}</strong></p>
+          <button type="button" id="bt1" class="btn btn-primary" onclick="openModal('{{ prodid }}','{{ prodname }}','{{ proddesc }}','{{ prodprice }}')">Add to Cart</button>
+        </div>
+      </div>
+      
+    </div>
+    {% endfor %}
+</div>
+<form method="post">
+<!-- Modal  1-->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+   
+        {% csrf_token %}
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Product Name</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p id="prodid"><input type="hidden" id="productid" name="productid" value=""/> </p>
+          <p id="productdesc">Product Description</p>
+          <p id="productprice"> <strong id="pprice"> product price </strong></p>
+          <p id="prodqty"><input type="number" id="productqty" name="productqty" value="1" min="1" max="10" class="form-control"/> </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <input type="submit" class="btn btn-primary" value="Buy Now">
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</form>
+  <script type="text/javascript">
+    function openModal(p_productid,p_productname,p_productdesc,p_productprice)
+    {
+        // alert(p_productid)
+        // alert(p_productname)
+        console.log(p_productid);
+        console.log(p_productname);
+        console.log(p_productdesc);
+        console.log(p_productprice);
+
+        const modal = new bootstrap.Modal(document.getElementById("exampleModal"));
+        document.getElementById("productid").value=p_productid;
+        console.log('Hidden productid input value: ', document.getElementById("productid").value); 
+        document.getElementById("productqty").value = 1;
+        document.getElementById("exampleModalLabel").innerText=p_productname;
+        document.getElementById("pprice").innerText="Price: "+p_productprice;
+        document.getElementById("productdesc").innerHTML="<b>Description:</b><br>"+p_productdesc;
+        modal.show();
+    }
+  </script>
+
+{% endblock %}
