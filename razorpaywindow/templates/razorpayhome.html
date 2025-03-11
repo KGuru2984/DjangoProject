@@ -16,11 +16,12 @@
                 },
             theme : {
                 // "color":"#F37254",
+                // checking
             },
             description: "Payment for Order {{ orderid }}",
             order_id: "{{ orderid }}",
             callback_url: '/welcomehome/',
-            cancel_url: '/productbasketview/',
+            cancel_url: '/productbasketview/2/',
             handler: function(response) {
                 // When the payment is successful, trigger form submission
                 // console.log(response);
@@ -31,6 +32,14 @@
                 document.getElementById("payment-form").razorpay_signature.value = response.razorpay_signature;
                 document.getElementById("payment-form").submit();  // Submit the form
             },
+            modal: {
+                //escape: true,  // Allow modal close with ESC key
+                //backdropclose: true, // Allow modal close by clicking outside
+                ondismiss: function() {
+                    // Redirect to cancel URL when modal is closed
+                    window.location.href = "{% url 'cardview' %}";
+                }
+            }
 
         };
 

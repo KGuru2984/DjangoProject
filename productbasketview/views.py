@@ -33,3 +33,6 @@ def BasketView(request):
     }
     
     return render(request,'basketview.html',context)
+
+def basketreturn(request,successflag):
+    return render(request,'basketmessage.html')
